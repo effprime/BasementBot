@@ -19,15 +19,15 @@ async def hug(ctx):
                 has_author_mentioned = True
             elif user.bot:
                 has_bot_mentioned = True
-                
+
         if has_author_mentioned and has_bot_mentioned:
-            await ctx.send(f"You're tyring to hug the bot AND yourself? You got issues")
+            await ctx.send(f"{ctx.author.mention} You're tyring to hug the bot AND yourself? You got issues")
             return
         elif has_author_mentioned:
-            await ctx.send(f"You tried to hug yourself?")
+            await ctx.send(f"{ctx.author.mention} You tried to hug yourself?")
             return
         elif has_bot_mentioned:
-            await ctx.send(f"You tried to hug the bot?")
+            await ctx.send(f"{ctx.author.mention} You tried to hug the bot?")
             return
 
         if len(ctx.message.mentions) > 1:
@@ -48,5 +48,5 @@ hugs = [
     "{user_giving_hug} reluctantly hugs {user_to_hug}...",
     "{user_giving_hug} hugs {user_to_hug} into a coma",
     "{user_giving_hug} smothers {user_to_hug} with a loving hug",
-    "{user_giving_hug} squeezes {user_to_hug} to death",
+    "{user_giving_hug} squeezes {user_to_hug} to death"
 ]
