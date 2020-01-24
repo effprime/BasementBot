@@ -9,7 +9,7 @@ def setup(bot):
 async def hug(ctx):
     try:
         if not ctx.message.mentions:
-            await ctx.send(f"You hugging the air?")
+            await ctx.send(f"{ctx.author.mention} You hugging the air?")
             return
         
         has_author_mentioned = False
