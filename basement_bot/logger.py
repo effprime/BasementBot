@@ -7,6 +7,7 @@ import logging
 import os
 import traceback
 
+import deepdiff
 import discord
 import munch
 from discord.ext import commands
@@ -585,13 +586,32 @@ class BotLogger:
         """Renders the named event."""
         before = kwargs.get("before")
         after = kwargs.get("after")
+
+        attrs = ["content", "embeds"]
+        diff = self.get_object_diff(before, after, attrs)
+
         server_text = self.get_server_text(before.channel)
 
         message = f"Message edit detected on message with ID {before.id}"
 
-        embed = self.bot.embed_api.Embed(title="Message edited", description=message)
-        embed.add_field(name="Before edit", value=before.content or "None")
-        embed.add_field(name="After edit", value=after.content or "None")
+        if diff:
+            embed_title = (
+                ",".join(k.upper() for k in diff.keys()) + " updated for message"
+            )
+        else:
+            embed_title = "Message updated"
+        embed = self.bot.embed_api.Embed(title=embed_title, description=message)
+
+        content_diff = diff.get("content")
+        if content_diff:
+            embed.add_field(name="Content (before)", value=content_diff.before)
+            embed.add_field(name="Content (after)", value=content_diff.after)
+
+        embeds_diff = diff.get("embeds")
+        if embeds_diff:
+            embed.add_field(name="Embeds (before)", value=len(embeds_diff.before))
+            embed.add_field(name="Embeds (after)", value=len(embeds_diff.after))
+
         embed.add_field(name="Author", value=before.author)
         embed.add_field(name="Channel", value=getattr(before.channel, "name", "DM"))
         embed.add_field(
@@ -719,14 +739,72 @@ class BotLogger:
     def render_guild_channel_update_event(self, *args, **kwargs):
         """Renders the named event."""
         before = kwargs.get("before")
-        # after = kwargs.get("after")
+        after = kwargs.get("after")
         server_text = self.get_server_text(before)
+
+        attrs = [
+            "category",
+            "changed_roles",
+            "name",
+            "overwrites",
+            "permissions_synced",
+            "position",
+        ]
+        diff = self.get_object_diff(before, after, attrs)
 
         message = (
             f"Channel with ID {before.id} modified in guild with ID {before.guild.id}"
         )
 
         embed = self.bot.embed_api.Embed(title="Channel updated", description=message)
+
+        category_diff = diff.get("category")
+        if category_diff:
+            embed.add_field(name="Category (before)", value=category_diff.before.name)
+            embed.add_field(name="Category (after)", value=category_diff.after.name)
+
+        changed_roles_diff = diff.get("changed_roles")
+        if changed_roles_diff:
+            embed.add_field(
+                name="Changed roles (before)",
+                value=",".join(r.name for r in changed_roles_diff.before[1:]),
+            )
+            embed.add_field(
+                name="Changed roles (after)",
+                value=",".join(r.name for r in changed_roles_diff.after[1:]),
+            )
+
+        name_diff = diff.get("name")
+        if name_diff:
+            embed.add_field(name="Mame (before)", value=name_diff.before)
+            embed.add_field(name="Mame (after)", value=name_diff.after)
+
+        overwrites_diff = diff.get("overwrites")
+        if overwrites_diff:
+            embed.add_field(
+                name="Overwrites (before)",
+                value=",".join(f"{k}{v}" for k, v in overwrites_diff.before.items())
+                or "None",
+            )
+            embed.add_field(
+                name="Overwrites (after)",
+                value=",".join(f"{k}{v}" for k, v in overwrites_diff.after.items())
+                or "None",
+            )
+
+        permissions_synced_diff = diff.get("permissions_synced")
+        if permissions_synced_diff:
+            embed.add_field(
+                name="Permissions_synced (before)", value=permissions_synced_diff.before
+            )
+            embed.add_field(
+                name="Permissions_synced (after)", value=permissions_synced_diff.after
+            )
+
+        position_diff = diff.get("position")
+        if position_diff:
+            embed.add_field(name="Position (before)", value=position_diff.before)
+            embed.add_field(name="Position (after)", value=position_diff.after)
 
         embed.add_field(name="Channel Name", value=before.name)
         embed.add_field(name="Server", value=server_text)
@@ -812,15 +890,61 @@ class BotLogger:
     def render_member_update_event(self, *args, **kwargs):
         """Renders the named event."""
         before = kwargs.get("before")
-        # after = kwargs.get("after")
+        after = kwargs.get("after")
         server_text = self.get_server_text(before)
+
+        attrs = ["activity", "avatar_url", "avatar", "nick", "roles", "status"]
+        diff = self.get_object_diff(before, after, attrs)
 
         message = (
             f"Member with ID {before.id} was updated in guild with ID {before.guild.id}"
         )
-        embed = self.bot.embed_api.Embed(
-            title="Member updated in guild", description=message
-        )
+
+        if diff:
+            embed_title = (
+                ",".join(k.upper() for k in diff.keys()) + " updated for member"
+            )
+        else:
+            embed_title = "Member updated"
+        embed = self.bot.embed_api.Embed(title=embed_title, description=message)
+
+        activity_diff = diff.get("activity")
+        if activity_diff:
+            embed.add_field(
+                name="Activity (before)", value=activity_diff.before.details
+            )
+            embed.add_field(name="Activity (after)", value=activity_diff.after.details)
+
+        avatar_url_diff = diff.get("avatar_url")
+        if avatar_url_diff:
+            embed.add_field(name="Avatar URL (before)", value=avatar_url_diff.before)
+            embed.add_field(name="Avatar URL (after)", value=avatar_url_diff.after)
+
+        avatar_diff = diff.get("avatar")
+        if avatar_diff:
+            embed.add_field(name="Avatar (before)", value=avatar_diff.before)
+            embed.add_field(name="Avatar (after)", value=avatar_diff.after)
+
+        nick_diff = diff.get("nick")
+        if nick_diff:
+            embed.add_field(name="Nick (before)", value=nick_diff.before)
+            embed.add_field(name="Nick (after)", value=nick_diff.after)
+
+        roles_diff = diff.get("roles")
+        if roles_diff:
+            embed.add_field(
+                name="Roles (before)",
+                value=",".join(r.name for r in roles_diff.before[1:]),
+            )
+            embed.add_field(
+                name="Roles (after)",
+                value=",".join(r.name for r in roles_diff.after[1:]),
+            )
+
+        status_diff = diff.get("status")
+        if status_diff:
+            embed.add_field(name="Status (before)", value=status_diff.before)
+            embed.add_field(name="Status (after)", value=status_diff.after)
 
         embed.add_field(name="Member", value=before)
         embed.add_field(name="Server", value=server_text)
@@ -961,6 +1085,32 @@ class BotLogger:
         """
         guild = guild or getattr(upper_object, "guild", None)
         return f"{guild.name} ({guild.id})" if guild else "DM"
+
+    @staticmethod
+    def get_object_diff(before, after, attrs_to_check):
+        """Finds differences in before, after object pairs.
+
+        before (obj): the before object
+        after (obj): the after object
+        attrs_to_check (list): the attributes to compare
+        """
+        result = {}
+
+        for attr in attrs_to_check:
+            after_value = getattr(after, attr, None)
+            if not after_value:
+                continue
+
+            before_value = getattr(before, attr, None)
+            if not before_value:
+                continue
+
+            if before_value != after_value:
+                result[attr] = munch.munchify(
+                    {"before": before_value, "after": after_value}
+                )
+
+        return result
 
     def generate_log_embed(self, message, level_):
         """Wrapper for generated the log embed.
