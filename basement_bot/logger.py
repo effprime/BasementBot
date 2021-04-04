@@ -7,7 +7,6 @@ import logging
 import os
 import traceback
 
-import deepdiff
 import discord
 import munch
 from discord.ext import commands
@@ -596,21 +595,13 @@ class BotLogger:
 
         if diff:
             embed_title = (
-                ",".join(k.upper() for k in diff.keys()) + " updated for message"
+                ",".join(k.upper() for k in diff) + " updated for message"
             )
         else:
             embed_title = "Message updated"
         embed = self.bot.embed_api.Embed(title=embed_title, description=message)
 
-        content_diff = diff.get("content")
-        if content_diff:
-            embed.add_field(name="Content (before)", value=content_diff.before)
-            embed.add_field(name="Content (after)", value=content_diff.after)
-
-        embeds_diff = diff.get("embeds")
-        if embeds_diff:
-            embed.add_field(name="Embeds (before)", value=len(embeds_diff.before))
-            embed.add_field(name="Embeds (after)", value=len(embeds_diff.after))
+        embed = self.add_diff_fields(embed, diff)
 
         embed.add_field(name="Author", value=before.author)
         embed.add_field(name="Channel", value=getattr(before.channel, "name", "DM"))
@@ -756,55 +747,16 @@ class BotLogger:
             f"Channel with ID {before.id} modified in guild with ID {before.guild.id}"
         )
 
-        embed = self.bot.embed_api.Embed(title="Channel updated", description=message)
-
-        category_diff = diff.get("category")
-        if category_diff:
-            embed.add_field(name="Category (before)", value=category_diff.before.name)
-            embed.add_field(name="Category (after)", value=category_diff.after.name)
-
-        changed_roles_diff = diff.get("changed_roles")
-        if changed_roles_diff:
-            embed.add_field(
-                name="Changed roles (before)",
-                value=",".join(r.name for r in changed_roles_diff.before[1:]),
+        if diff:
+            embed_title = (
+                ",".join(k.upper() for k in diff) + " updated for channel"
             )
-            embed.add_field(
-                name="Changed roles (after)",
-                value=",".join(r.name for r in changed_roles_diff.after[1:]),
-            )
+        else:
+            embed_title = "Channel updated"
 
-        name_diff = diff.get("name")
-        if name_diff:
-            embed.add_field(name="Mame (before)", value=name_diff.before)
-            embed.add_field(name="Mame (after)", value=name_diff.after)
+        embed = self.bot.embed_api.Embed(title=embed_title, description=message)
 
-        overwrites_diff = diff.get("overwrites")
-        if overwrites_diff:
-            embed.add_field(
-                name="Overwrites (before)",
-                value=",".join(f"{k}{v}" for k, v in overwrites_diff.before.items())
-                or "None",
-            )
-            embed.add_field(
-                name="Overwrites (after)",
-                value=",".join(f"{k}{v}" for k, v in overwrites_diff.after.items())
-                or "None",
-            )
-
-        permissions_synced_diff = diff.get("permissions_synced")
-        if permissions_synced_diff:
-            embed.add_field(
-                name="Permissions_synced (before)", value=permissions_synced_diff.before
-            )
-            embed.add_field(
-                name="Permissions_synced (after)", value=permissions_synced_diff.after
-            )
-
-        position_diff = diff.get("position")
-        if position_diff:
-            embed.add_field(name="Position (before)", value=position_diff.before)
-            embed.add_field(name="Position (after)", value=position_diff.after)
+        embed = self.add_diff_fields(embed, diff)
 
         embed.add_field(name="Channel Name", value=before.name)
         embed.add_field(name="Server", value=server_text)
@@ -902,49 +854,13 @@ class BotLogger:
 
         if diff:
             embed_title = (
-                ",".join(k.upper() for k in diff.keys()) + " updated for member"
+                ",".join(k.upper() for k in diff) + " updated for member"
             )
         else:
             embed_title = "Member updated"
         embed = self.bot.embed_api.Embed(title=embed_title, description=message)
 
-        activity_diff = diff.get("activity")
-        if activity_diff:
-            embed.add_field(
-                name="Activity (before)", value=activity_diff.before.details
-            )
-            embed.add_field(name="Activity (after)", value=activity_diff.after.details)
-
-        avatar_url_diff = diff.get("avatar_url")
-        if avatar_url_diff:
-            embed.add_field(name="Avatar URL (before)", value=avatar_url_diff.before)
-            embed.add_field(name="Avatar URL (after)", value=avatar_url_diff.after)
-
-        avatar_diff = diff.get("avatar")
-        if avatar_diff:
-            embed.add_field(name="Avatar (before)", value=avatar_diff.before)
-            embed.add_field(name="Avatar (after)", value=avatar_diff.after)
-
-        nick_diff = diff.get("nick")
-        if nick_diff:
-            embed.add_field(name="Nick (before)", value=nick_diff.before)
-            embed.add_field(name="Nick (after)", value=nick_diff.after)
-
-        roles_diff = diff.get("roles")
-        if roles_diff:
-            embed.add_field(
-                name="Roles (before)",
-                value=",".join(r.name for r in roles_diff.before[1:]),
-            )
-            embed.add_field(
-                name="Roles (after)",
-                value=",".join(r.name for r in roles_diff.after[1:]),
-            )
-
-        status_diff = diff.get("status")
-        if status_diff:
-            embed.add_field(name="Status (before)", value=status_diff.before)
-            embed.add_field(name="Status (after)", value=status_diff.after)
+        embed = self.add_diff_fields(embed, diff)
 
         embed.add_field(name="Member", value=before)
         embed.add_field(name="Server", value=server_text)
@@ -978,12 +894,45 @@ class BotLogger:
     def render_guild_update_event(self, *args, **kwargs):
         """Renders the named event."""
         before = kwargs.get("before")
-        # after = kwargs.get("after")
+        after = kwargs.get("after")
         server_text = self.get_server_text(None, guild=before)
+
+        attrs = [
+            "banner",
+            "banner_url",
+            "bitrate_limit",
+            "categories",
+            "default_role",
+            "description",
+            "discovery_splash",
+            "discovery_splash_url",
+            "emoji_limit",
+            "emojis",
+            "explicit_content_filter",
+            "features",
+            "icon",
+            "icon_url",
+            "name",
+            "owner",
+            "region",
+            "roles",
+            "rules_channel",
+            "verification_level",
+        ]
+        diff = self.get_object_diff(before, after, attrs)
 
         message = f"Guild with ID {before.id} updated"
 
-        embed = self.bot.embed_api.Embed(title="Guild updated", description=message)
+        if diff:
+            embed_title = (
+                ",".join(k.upper() for k in diff) + " updated for guild"
+            )
+        else:
+            embed_title = "Guild updated"
+        embed = self.bot.embed_api.Embed(title=embed_title, description=message)
+
+        embed = self.add_diff_fields(embed, diff)
+
         embed.add_field(name="Server", value=server_text)
 
         return message, embed
@@ -1019,14 +968,25 @@ class BotLogger:
     def render_guild_role_update_event(self, *args, **kwargs):
         """Renders the named event."""
         before = kwargs.get("before")
-        # after = kwargs.get("after")
+        after = kwargs.get("after")
         server_text = self.get_server_text(before)
+
+        attrs = ["color", "mentionable", "name", "permissions", "position", "tags"]
+        diff = self.get_object_diff(before, after, attrs)
 
         message = (
             f"Role with name {before.name} updated in guild with ID {before.guild.id}"
         )
 
-        embed = self.bot.embed_api.Embed(title="Role updated", description=message)
+        if diff:
+            embed_title = ",".join(k.upper() for k in diff) + " updated for role"
+        else:
+            embed_title = "Role updated"
+
+        embed = self.bot.embed_api.Embed(title=embed_title, description=message)
+
+        embed = self.add_diff_fields(embed, diff)
+
         embed.add_field(name="Server", value=server_text)
 
         return message, embed
@@ -1111,6 +1071,34 @@ class BotLogger:
                 )
 
         return result
+
+    @staticmethod
+    def add_diff_fields(embed, diff):
+        """Adds fields to an embed based on diff data.
+
+        parameters:
+            embed (discord.Embed): the embed object
+            diff (dict): the diff data for an object
+        """
+        for attr, diff_data in diff.items():
+            attru = attr.upper()
+            if isinstance(diff_data.before, list):
+                action = (
+                    "added"
+                    if len(diff_data.before) < len(diff_data.after)
+                    else "removed"
+                )
+                list_diff = set(diff_data.after) ^ set(diff_data.before)
+
+                embed.add_field(
+                    name=f"{attru} {action}", value=",".join(str(o) for o in list_diff)
+                )
+                continue
+
+            embed.add_field(name=f"{attru} (before)", value=diff_data.before)
+            embed.add_field(name=f"{attru} (after)", value=diff_data.after)
+
+        return embed
 
     def generate_log_embed(self, message, level_):
         """Wrapper for generated the log embed.
