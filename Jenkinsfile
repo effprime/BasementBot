@@ -3,10 +3,10 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                make dev
-                make check-format
-                make lint
-                make prod
+                sh 'make dev'
+                sh 'make check-format'
+                sh 'make lint'
+                sh 'make prod'
             }
         }
     }
