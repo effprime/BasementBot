@@ -12,7 +12,7 @@ pipeline {
                 sh 'make lint'
             }
         }
-        stage('Linting') {
+        stage('Build prod image') {
             steps {
                 sh 'make prod'
             }
