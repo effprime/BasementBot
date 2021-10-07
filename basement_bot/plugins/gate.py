@@ -54,6 +54,33 @@ def setup(bot):
 
 
 class ServerGate(base.MatchCog):
+
+    GUILD_PURGE_WAIT_SECONDS = 3600
+
+    async def preconfig(self):
+        self.bot.loop.create_task(self.clean())
+
+    async def clean(self):
+        while True:
+            for guild in self.bot.guilds:
+                try:
+                    config = await self.bot.get_context_config(guild=guild)
+                    channel = self.bot.get_channel(
+                        int(config.plugins.gate.channel.value)
+                    )
+                    await channel.purge(
+                        check=lambda m: not str(m.id)
+                        in config.plugins.gate.static_messages.value
+                    )
+                except Exception as e:
+                    await self.bot.logger.error(
+                        f"Unable to clean guild with ID {guild.id}'s gate channel messages",
+                        exception=e,
+                        channel=config.get("logging_channel"),
+                    )
+                    pass
+                await asyncio.sleep(self.GUILD_PURGE_WAIT_SECONDS)
+
     async def match(self, config, ctx, _):
         if not config.plugins.gate.channel.value:
             return False
@@ -63,9 +90,7 @@ class ServerGate(base.MatchCog):
     async def response(self, config, ctx, content, _):
         prefix = await self.bot.get_prefix(ctx.message)
 
-        is_admin = await self.bot.is_bot_admin(ctx)
-
-        if content.startswith(prefix) and is_admin:
+        if content.startswith(prefix):
             return
 
         await ctx.message.delete()
