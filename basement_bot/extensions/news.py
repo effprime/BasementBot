@@ -32,8 +32,8 @@ def setup(bot):
     config.add(
         key="category",
         datatype="str",
-        title="Excluded categories",
-        description="The category to use when receiving cronjob headlines",
+        title="Category",
+        description="The category to use when receiving cronjob headlines (defaults to 0)",
         default=None,
     )
 
