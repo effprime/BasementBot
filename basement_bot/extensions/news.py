@@ -33,7 +33,7 @@ def setup(bot):
         key="category",
         datatype="str",
         title="Category",
-        description="The category to use when receiving cronjob headlines (defaults to 0)",
+        description="The category to use when receiving cronjob headlines",
         default=None,
     )
 
@@ -114,21 +114,15 @@ class News(base.LoopCog):
         name="random",
         brief="Gets a random news article",
         description="Gets a random news headline",
+        usage="[category] (optional)",
     )
-    async def random(self, ctx, category=None):
-        if category and not category.lower() in [cat.value for cat in Category]:
-            valid_cats = ", ".join(f"`{cat.value}`" for cat in Category)
-            await ctx.send_deny_embed(
-                f"Invalid category: `{category}` - valid categories: {valid_cats}"
-            )
-            return
-
+    async def random(self, ctx, category: Category = None):
         config = await self.bot.get_context_config(ctx)
 
         url = None
         while not url:
             article = await self.get_random_headline(
-                config.extensions.news.country.value, category
+                config.extensions.news.country.value, category.value
             )
             url = article.get("url")
 

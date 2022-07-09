@@ -190,9 +190,7 @@ class BasementBot(base.AdvancedBot):
             ):
                 return
 
-        message_template = error.COMMAND_ERROR_RESPONSE_TEMPLATES.get(
-            exception.__class__, ""
-        )
+        message_template = error.COMMAND_ERROR_RESPONSES.get(exception.__class__, "")
         # see if we have mapped this error to no response (None)
         # or if we have added it to the global ignore list of errors
         if message_template is None or exception.__class__ in error.IGNORED_ERRORS:
