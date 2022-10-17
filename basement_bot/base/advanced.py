@@ -19,6 +19,7 @@ class AdvancedBot(DataBot):
 
     GUILD_CONFIG_COLLECTION = "guild_config"
     CONFIG_RECEIVE_WARNING_TIME_MS = 1000
+    DM_GUILD_ID = "dmcontext"
 
     def __init__(self, *args, **kwargs):
         self.owner = None
@@ -70,7 +71,7 @@ class AdvancedBot(DataBot):
 
         if ctx:
             guild_from_ctx = getattr(ctx, "guild", None)
-            lookup = guild_from_ctx.id if guild_from_ctx else "dmcontext"
+            lookup = guild_from_ctx.id if guild_from_ctx else self.DM_GUILD_ID
         elif guild:
             lookup = guild.id
         else:

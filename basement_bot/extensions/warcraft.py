@@ -60,14 +60,15 @@ class Region(enum.Enum):
 
 class BattleNet(base.LoopCog):
 
-    VALID_REGIONS = ["us", "eu", "cn"]
-    OAUTH_URL = "https://oauth.battle.net/token"
+    RETAIL_NAMESPACE = "dynamic-us"
+    CLASSIC_NAMESPACE = "dynamic-classic-us"
+    OAUTH_URL = "oauth.battle.net/token"
 
     async def get_oauth_token(self):
         data = {"grant_type": "client_credentials"}
         response = await self.bot.http_call(
             "post",
-            self.OAUTH_URL,
+            f"https://{self.OAUTH_URL}",
             data=data,
             auth=aiohttp.BasicAuth(
                 self.bot.file_config.main.api_keys.battlenet_client,
@@ -100,10 +101,6 @@ class BattleNet(base.LoopCog):
 
 
 class WarcraftCommands(BattleNet):
-
-    RETAIL_NAMESPACE = "dynamic-us"
-    CLASSIC_NAMESPACE = "dynamic-classic-us"
-
     @commands.group(
         name="wowc",
         brief="Executes a WoW classic command",
@@ -204,6 +201,9 @@ class RealmAlerts(BattleNet, base.LoopCog):
             # check if realm configured
             realm = config.extensions.warcraft.alert_realm.value
             if not realm:
+                continue
+
+            if config.guild_id == self.bot.DM_GUILD_ID:
                 continue
 
             # check if bot still in guild
