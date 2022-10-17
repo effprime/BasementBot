@@ -42,6 +42,19 @@ class AdvancedBot(DataBot):
             guild_config, "command_prefix", self.file_config.main.default_prefix
         )
 
+    async def get_all_context_configs(self, projection, limit=100):
+        """Gets all context configs.
+
+        parameters:
+            projection (dict): the MongoDB projection for returned data
+            limit (int): the max number of config objects to return
+        """
+        configs = []
+        cursor = self.guild_config_collection.find({}, projection)
+        for document in await cursor.to_list(length=limit):
+            configs.append(munch.DefaultMunch.fromDict(document, None))
+        return configs
+
     async def get_context_config(
         self, ctx=None, guild=None, create_if_none=True, get_from_cache=True
     ):
@@ -103,14 +116,14 @@ class AdvancedBot(DataBot):
         parameters:
             lookup (str): the primary key for the guild config document object
         """
-        extensions_config = munch.Munch()
+        extensions_config = munch.DefaultMunch(None)
 
         for extension_name, extension_config in self.extension_configs.items():
             if extension_config:
                 # don't attach to guild config if extension isn't configurable
                 extensions_config[extension_name] = extension_config.data
 
-        config_ = munch.Munch()
+        config_ = munch.DefaultMunch(None)
 
         config_.guild_id = str(lookup)
         config_.command_prefix = self.file_config.main.default_prefix
