@@ -33,6 +33,7 @@ main:
         github:
         battlenet_client:
         battlenet_key:
+        openai:
     logging:
         queue_enabled: True
         block_discord_send: False
