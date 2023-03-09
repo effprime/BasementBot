@@ -4,8 +4,8 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(Spotify(bot=bot))
+async def setup(bot):
+    await bot.add_cog(Spotify(bot=bot))
 
 
 class Spotify(base.BaseCog):

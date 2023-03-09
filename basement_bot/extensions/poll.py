@@ -10,9 +10,9 @@ from discord.ext import commands
 from discord.reaction import Reaction
 
 
-def setup(bot):
-    bot.add_cog(ReactionPoller(bot=bot))
-    bot.add_cog(StrawPoller(bot=bot))
+async def setup(bot):
+    await bot.add_cog(ReactionPoller(bot=bot))
+    await bot.add_cog(StrawPoller(bot=bot))
 
 
 class PollEmbed(discord.Embed):

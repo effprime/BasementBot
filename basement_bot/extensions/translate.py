@@ -3,8 +3,8 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(Translator(bot=bot))
+async def setup(bot):
+    await bot.add_cog(Translator(bot=bot))
 
 
 class Translator(base.BaseCog):

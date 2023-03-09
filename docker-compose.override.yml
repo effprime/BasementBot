@@ -9,4 +9,4 @@ services:
             - DEBUG=1
         volumes:
             - ./:/var/BasementBot
-            # - ../BotLog/src/botlog:/usr/local/lib/python3.9/site-packages/botlog
+            - ../BotLogging/src/botlogging:/usr/local/lib/python3.9/site-packages/botlogging

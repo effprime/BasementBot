@@ -8,7 +8,7 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     config = bot.ExtensionConfig()
     config.add(
         key="region",
@@ -38,10 +38,9 @@ def setup(bot):
         description="The ID of the channel to which realm alerts are sent",
         default=None,
     )
+    await bot.add_cog(WarcraftCommands(bot=bot))
+    await bot.add_cog(RealmAlerts(bot=bot, extension_name="warcraft", no_guild=True))
     bot.add_extension_config("warcraft", config)
-    bot.add_cog(WarcraftCommands(bot=bot))
-    bot.add_cog(RealmAlerts(bot=bot, extension_name="warcraft", no_guild=True))
-
 
 class WarcraftEmbed(discord.Embed):
 

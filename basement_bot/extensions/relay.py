@@ -9,9 +9,9 @@ import munch
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(DiscordRelay(bot=bot, no_guild=True, extension_name="relay"))
-    bot.add_cog(IRCReceiver(bot=bot, no_guild=True, extension_name="relay"))
+async def setup(bot):
+    await bot.add_cog(DiscordRelay(bot=bot, no_guild=True, extension_name="relay"))
+    await bot.add_cog(IRCReceiver(bot=bot, no_guild=True, extension_name="relay"))
 
 
 class RelayEvent:

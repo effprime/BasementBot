@@ -10,7 +10,7 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     class Warning(bot.db.Model):
         __tablename__ = "warnings"
         pk = bot.db.Column(bot.db.Integer, primary_key=True)
@@ -105,7 +105,7 @@ def setup(bot):
         default=50,
     )
 
-    bot.add_cog(Protector(bot=bot, models=[Warning], extension_name="protect"))
+    await bot.add_cog(Protector(bot=bot, models=[Warning], extension_name="protect"))
     bot.add_extension_config("protect", config)
 
 

@@ -71,7 +71,7 @@ import base
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     bot.process_extension_setup(cogs=[Greeter])
 
 

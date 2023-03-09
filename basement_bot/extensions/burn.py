@@ -6,8 +6,8 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(Burn(bot=bot))
+async def setup(bot):
+    await bot.add_cog(Burn(bot=bot))
 
 
 class BurnEmbed(discord.Embed):

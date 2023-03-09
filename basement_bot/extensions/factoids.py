@@ -14,7 +14,7 @@ import yaml
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     class Factoid(bot.db.Model):
         __tablename__ = "factoids"
 
@@ -72,7 +72,7 @@ def setup(bot):
         default=None,
     )
 
-    bot.add_cog(
+    await bot.add_cog(
         FactoidManager(
             bot=bot,
             models=[Factoid, FactoidCron, FactoidResponseEvent],
@@ -341,7 +341,7 @@ class FactoidManager(base.MatchCog):
         # get cronjobs from database
         jobs = await self.models.FactoidCron.query.gino.all()
         for job in jobs:
-            self.bot.loop.create_task(self.cronjob(job))
+            asyncio.create_task(self.cronjob(job))
 
     async def cronjob(self, job):
         runtime_id = uuid.uuid4()
@@ -497,7 +497,7 @@ class FactoidManager(base.MatchCog):
         )
         await job.create()
 
-        self.bot.loop.create_task(self.cronjob(job))
+        asyncio.create_task(self.cronjob(job))
 
         await ctx.send_confirm_embed("Factoid loop created")
 

@@ -8,8 +8,8 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(Rules(bot=bot))
+async def setup(bot):
+    await bot.add_cog(Rules(bot=bot))
 
 
 class RuleEmbed(discord.Embed):

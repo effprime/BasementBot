@@ -5,8 +5,8 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(ChatGPT(bot=bot))
+async def setup(bot):
+    await bot.add_cog(ChatGPT(bot=bot))
 
 
 class ChatGPT(base.BaseCog):
@@ -41,7 +41,7 @@ class ChatGPT(base.BaseCog):
         )
         return response
 
-    @util.with_typing
+    # @util.with_typing
     @commands.cooldown(3, 60, commands.BucketType.channel)
     @commands.command(
         brief="Prompts ChatGPT",

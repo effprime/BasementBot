@@ -7,7 +7,7 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     class DirectoryExistence(bot.db.Model):
         __tablename__ = "directoryexistence"
         guild_id = bot.db.Column(bot.db.String, primary_key=True)
@@ -36,7 +36,7 @@ def setup(bot):
         default={},
     )
 
-    bot.add_cog(ChannelDirectory(bot=bot, models=[DirectoryExistence]))
+    await bot.add_cog(ChannelDirectory(bot=bot, models=[DirectoryExistence]))
     bot.add_extension_config("directory", config)
 
 
@@ -69,7 +69,7 @@ class ChannelDirectory(base.BaseCog):
         ]
 
         for guild in self.bot.guilds:
-            self.bot.loop.create_task(self.run_setup(guild))
+            asyncio.create_task(self.run_setup(guild))
 
     async def run_setup(self, guild):
         config = await self.bot.get_context_config(guild=guild)

@@ -134,7 +134,7 @@ class AdminControl(base.BaseCog):
                 return
 
         fp = await attachment.read()
-        self.bot.register_file_extension(extension_name, fp)
+        await self.bot.register_file_extension(extension_name, fp)
         await ctx.send_confirm_embed(
             "I've registered that extension. You can now try loading it"
         )

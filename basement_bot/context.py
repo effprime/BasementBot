@@ -6,7 +6,7 @@ import datetime
 import discord
 import embeds
 from discord.ext import commands
-
+import asyncio
 
 class Context(commands.Context):
     """Custom context object to provide more functionality."""
@@ -181,7 +181,7 @@ class Context(commands.Context):
 
         This is useful if you want your command to finish executing when pagination starts.
         """
-        self.bot.loop.create_task(self.paginate(*args, **kwargs))
+        asyncio.create_task(self.paginate(*args, **kwargs))
 
     async def confirm(self, message, timeout=60, delete_after=False, bypass=None):
         """Waits on a confirm reaction from a given user.

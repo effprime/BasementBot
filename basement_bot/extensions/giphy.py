@@ -3,8 +3,8 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(Giphy(bot=bot))
+async def setup(bot):
+    await bot.add_cog(Giphy(bot=bot))
 
 
 class Giphy(base.BaseCog):

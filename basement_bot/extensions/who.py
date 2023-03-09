@@ -8,7 +8,7 @@ import yaml
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     class UserNote(bot.db.Model):
         __tablename__ = "usernote"
 
@@ -28,7 +28,7 @@ def setup(bot):
         default=None,
     )
 
-    bot.add_cog(Who(bot=bot, models=[UserNote], extension_name="who"))
+    await bot.add_cog(Who(bot=bot, models=[UserNote], extension_name="who"))
     bot.add_extension_config("who", config)
 
 

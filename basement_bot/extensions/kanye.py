@@ -7,7 +7,7 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     config = bot.ExtensionConfig()
     config.add(
         key="channel",
@@ -31,7 +31,7 @@ def setup(bot):
         default=48,
     )
 
-    bot.add_cog(KanyeQuotes(bot=bot, extension_name="kanye"))
+    await bot.add_cog(KanyeQuotes(bot=bot, extension_name="kanye"))
     bot.add_extension_config("kanye", config)
 
 
