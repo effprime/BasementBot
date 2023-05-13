@@ -27,7 +27,7 @@ class BasementBot(base.AdvancedBot):
         """Starts IPC and the event loop and blocks until interrupted."""
 
         if isinstance(self.logger, botlogging.DelayedLogger):
-            await self.logger.register_queue()
+            self.logger.register_queue()
             asyncio.create_task(self.logger.run())
 
         if os.getenv(self.IPC_SECRET_ENV_KEY):
