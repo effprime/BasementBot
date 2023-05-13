@@ -10,7 +10,6 @@ async def setup(bot):
 
 
 class XKCD(base.BaseCog):
-
     MOST_RECENT_API_URL = "https://xkcd.com/info.0.json"
     SPECIFIC_API_URL = "https://xkcd.com/%s/info.0.json"
 

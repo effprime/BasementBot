@@ -19,7 +19,6 @@ async def setup(bot):
 
 
 class GoogleEmbed(discord.Embed):
-
     ICON_URL = (
         "https://cdn.icon-icons.com/icons2/673/PNG/512/Google_icon-icons.com_60497.png"
     )
@@ -31,7 +30,6 @@ class GoogleEmbed(discord.Embed):
 
 
 class Googler(base.BaseCog):
-
     GOOGLE_URL = "https://www.googleapis.com/customsearch/v1"
     YOUTUBE_URL = "https://www.googleapis.com/youtube/v3/search?part=id&maxResults=10"
 
@@ -48,7 +46,6 @@ class Googler(base.BaseCog):
     async def google(self, ctx):
         pass
 
-    @util.with_typing
     @commands.guild_only()
     @google.command(
         aliases=["s"],
@@ -97,7 +94,6 @@ class Googler(base.BaseCog):
 
         ctx.task_paginate(pages=embeds)
 
-    @util.with_typing
     @commands.guild_only()
     @google.command(
         aliases=["i", "is"],
@@ -130,7 +126,6 @@ class Googler(base.BaseCog):
 
         ctx.task_paginate(pages=embeds)
 
-    @util.with_typing
     @commands.cooldown(3, 60, commands.BucketType.channel)
     @commands.guild_only()
     @commands.command(

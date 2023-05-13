@@ -28,7 +28,6 @@ class Question:
 
 
 class WouldYouRather(base.BaseCog):
-
     HAS_CONFIG = False
 
     async def preconfig(self):
@@ -519,7 +518,6 @@ class WouldYouRather(base.BaseCog):
         Question("watch a two-hour movie", "watch two hours of shows"),
     ]
 
-    @util.with_typing
     @commands.command(
         name="wyr",
         brief="Gets Would You Rather questions",

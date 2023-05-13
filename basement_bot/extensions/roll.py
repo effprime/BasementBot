@@ -11,7 +11,6 @@ async def setup(bot):
 
 
 class RollEmbed(discord.Embed):
-
     ICON_URL = "https://cdn.icon-icons.com/icons2/1465/PNG/512/678gamedice_100992.png"
 
     def __init__(self, *args, **kwargs):
@@ -24,7 +23,6 @@ class RollEmbed(discord.Embed):
 
 
 class Roller(base.BaseCog):
-    @util.with_typing
     @commands.command(
         name="roll",
         brief="Rolls a number",

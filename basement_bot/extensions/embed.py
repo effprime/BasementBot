@@ -9,7 +9,6 @@ async def setup(bot):
 
 
 class Embedder(base.BaseCog):
-    @util.with_typing
     @commands.has_permissions(manage_messages=True)
     @commands.command(
         brief="Generates a list of embeds",

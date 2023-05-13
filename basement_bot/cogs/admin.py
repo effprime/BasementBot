@@ -34,7 +34,6 @@ class AdminControl(base.BaseCog):
         # pylint: disable=missing-function-docstring
         pass
 
-    @util.with_typing
     @extension_group.command(
         name="status",
         description="Gets the status of an extension by name",
@@ -67,7 +66,6 @@ class AdminControl(base.BaseCog):
 
         await ctx.send(embed=embed)
 
-    @util.with_typing
     @extension_group.command(
         name="load", description="Loads an extension by name", usage="[extension-name]"
     )
@@ -83,7 +81,6 @@ class AdminControl(base.BaseCog):
         ctx.bot.load_extension(f"extensions.{extension_name}")
         await ctx.send_confirm_embed("I've loaded that extension")
 
-    @util.with_typing
     @extension_group.command(
         name="unload",
         description="Unloads an extension by name",
@@ -101,7 +98,6 @@ class AdminControl(base.BaseCog):
         ctx.bot.unload_extension(f"extensions.{extension_name}")
         await ctx.send_confirm_embed("I've unloaded that extension")
 
-    @util.with_typing
     @extension_group.command(
         name="register",
         description="Uploads an extension from Discord to be saved on the bot",
@@ -148,7 +144,6 @@ class AdminControl(base.BaseCog):
         # pylint: disable=missing-function-docstring
         pass
 
-    @util.with_typing
     @command_group.command(
         name="enable", description="Enables a command by name", usage="[command-name]"
     )
@@ -173,7 +168,6 @@ class AdminControl(base.BaseCog):
         command_.enabled = True
         await ctx.send_confirm_embed(f"Successfully enabled command: `{command_name}`")
 
-    @util.with_typing
     @command_group.command(
         name="disable", description="Disables a command by name", usage="[command-name]"
     )
@@ -207,7 +201,6 @@ class AdminControl(base.BaseCog):
         # pylint: disable=missing-function-docstring
         pass
 
-    @util.with_typing
     @set_group.command(
         name="game", description="Sets the game of the bot", usage="[game-name]"
     )
@@ -223,7 +216,6 @@ class AdminControl(base.BaseCog):
         await ctx.bot.change_presence(activity=discord.Game(name=game_name))
         await ctx.send_confirm_embed(f"Successfully set game to: *{game_name}*")
 
-    @util.with_typing
     @set_group.command(
         name="nick", description="Sets the nick of the bot", usage="[nickname]"
     )
@@ -246,7 +238,6 @@ class AdminControl(base.BaseCog):
         # pylint: disable=missing-function-docstring
         pass
 
-    @util.with_typing
     @echo.command(
         name="channel",
         description="Echos a message to a channel",
@@ -271,7 +262,6 @@ class AdminControl(base.BaseCog):
 
         await ctx.send_confirm_embed("Message sent")
 
-    @util.with_typing
     @echo.command(
         name="user",
         description="Echos a message to a user",
@@ -367,7 +357,6 @@ class AdminControl(base.BaseCog):
 
         await ctx.send(embed=embed)
 
-    @util.with_typing
     @commands.command(
         name="issue",
         aliases=["ish", "botish", "botissue"],

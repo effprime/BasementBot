@@ -52,7 +52,6 @@ class Category(enum.Enum):
 
 
 class News(base.LoopCog):
-
     API_URL = "http://newsapi.org/v2/top-headlines?apiKey={}&country={}"
 
     async def get_headlines(self, country_code, category=None):

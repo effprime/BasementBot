@@ -10,7 +10,6 @@ async def setup(bot):
 
 
 class Lenny(base.BaseCog):
-
     LENNYS_SELECTION = [
         "( ͡° ͜ʖ ͡°)",
         "( ͠° ͟ʖ ͡°)",
@@ -35,7 +34,6 @@ class Lenny(base.BaseCog):
         "✺◟( ͡° ͜ʖ ͡°)◞✺",
     ]
 
-    @util.with_typing
     @commands.command(
         name="len",
         brief="Returns a Lenny face",

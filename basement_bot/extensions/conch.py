@@ -10,7 +10,6 @@ async def setup(bot):
 
 
 class ConchEmbed(discord.Embed):
-
     PIC_URL = "https://i.imgur.com/vdvGrsR.png"
 
     def __init__(self, *args, **kwargs):
@@ -20,7 +19,6 @@ class ConchEmbed(discord.Embed):
 
 
 class MagicConch(base.BaseCog):
-
     RESPONSES = [
         "As I see it, yes.",
         "Ask again later.",

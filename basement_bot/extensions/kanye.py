@@ -36,7 +36,6 @@ async def setup(bot):
 
 
 class KanyeEmbed(discord.Embed):
-
     KANYE_PICS = [
         "https://i.imgur.com/ITmTXGz.jpg",
         "https://i.imgur.com/o8BkPrL.jpg",
@@ -55,7 +54,6 @@ class KanyeEmbed(discord.Embed):
 
 
 class KanyeQuotes(base.LoopCog):
-
     API_URL = "https://api.kanye.rest"
 
     async def get_quote(self):
@@ -80,7 +78,6 @@ class KanyeQuotes(base.LoopCog):
             )
         )
 
-    @util.with_typing
     @commands.cooldown(1, 60, commands.BucketType.channel)
     @commands.command(
         brief="Gets a Kanye West quote",

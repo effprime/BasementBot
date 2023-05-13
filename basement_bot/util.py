@@ -90,39 +90,6 @@ def config_schema_matches(input_config, current_config):
     return True
 
 
-def with_typing(command):
-    """Decorator for commands to utilize "async with" ctx.typing()
-
-    This will show the bot as typing... until the command completes
-
-    parameters:
-        command (discord.ext.commands.Command): the command object to modify
-    """
-    original_callback = command.callback
-
-    async def typing_wrapper(*args, **kwargs):
-        print(args)
-        print(kwargs)
-        context = args[1]
-
-        typing_func = getattr(context, "typing", None)
-
-        if not typing_func:
-            await original_callback(*args, **kwargs)
-        else:
-            try:
-                async with typing_func():
-                    await original_callback(*args, **kwargs)
-            except discord.Forbidden:
-                await original_callback(*args, **kwargs)
-
-    typing_wrapper.__name__ = command.name
-    command.callback = typing_wrapper
-    command.callback.__module__ = original_callback.__module__
-
-    return command
-
-
 def preserialize_object(obj):
     """Provides sane object -> dict transformation for most objects.
 

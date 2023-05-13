@@ -18,7 +18,6 @@ async def setup(bot):
 
 
 class Joker(base.BaseCog):
-
     API_URL = "https://v2.jokeapi.dev/joke/Any"
 
     async def call_api(self, ctx, config):
@@ -44,7 +43,6 @@ class Joker(base.BaseCog):
         embed.color = discord.Color.random()
         return embed
 
-    @util.with_typing
     @commands.cooldown(1, 60, commands.BucketType.channel)
     @commands.command(
         name="joke",

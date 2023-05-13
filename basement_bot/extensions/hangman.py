@@ -22,7 +22,6 @@ async def setup(bot):
 
 
 class HangmanGame:
-
     HANG_PICS = [
         """
         +---+

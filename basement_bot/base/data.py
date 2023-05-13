@@ -109,9 +109,7 @@ class DataBot(ExtensionsBot):
         """
         await self.logger.debug("Obtaining RabbitMQ robust instance")
 
-        connection = await aio_pika.connect_robust(
-            self.generate_rabbit_url()
-        )
+        connection = await aio_pika.connect_robust(self.generate_rabbit_url())
 
         return connection
 
@@ -152,7 +150,6 @@ class DataBot(ExtensionsBot):
         state = True
         async with queue.iterator() as queue_iter:
             async for message in queue_iter:
-
                 if state_func:
                     state = await state_func()
                     if not state:

@@ -1,5 +1,6 @@
 """Module for defining the extensions bot methods."""
 
+import asyncio
 import glob
 import os
 
@@ -7,7 +8,7 @@ import botlogging
 import munch
 import yaml
 from discord.ext import commands
-import asyncio
+
 
 class ExtensionConfig:
     """Represents the config of an extension."""
@@ -142,7 +143,9 @@ class ExtensionsBot(commands.Bot):
                 continue
 
             try:
-                await self.load_extension(f"{self.EXTENSIONS_DIR_NAME}.{extension_name}")
+                await self.load_extension(
+                    f"{self.EXTENSIONS_DIR_NAME}.{extension_name}"
+                )
             except Exception as exception:
                 self.logger.console.error(
                     f"Failed to load extension {extension_name}: {exception}"

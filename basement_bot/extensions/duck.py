@@ -71,7 +71,6 @@ async def setup(bot):
 
 
 class DuckHunt(base.LoopCog):
-
     DUCK_PIC_URL = "https://cdn.icon-icons.com/icons2/1446/PNG/512/22276duck_98782.png"
     BEFRIEND_URL = "https://cdn.icon-icons.com/icons2/603/PNG/512/heart_love_valentines_relationship_dating_date_icon-icons.com_55985.png"
     KILL_URL = "https://cdn.icon-icons.com/icons2/1919/PNG/512/huntingtarget_122049.png"
@@ -241,7 +240,6 @@ class DuckHunt(base.LoopCog):
     async def duck(self, ctx):
         pass
 
-    @util.with_typing
     @commands.guild_only()
     @duck.command(
         brief="Get duck stats",
@@ -271,7 +269,6 @@ class DuckHunt(base.LoopCog):
 
         await ctx.send(embed=embed)
 
-    @util.with_typing
     @commands.guild_only()
     @duck.command(
         brief="Get duck friendship scores",
@@ -314,7 +311,6 @@ class DuckHunt(base.LoopCog):
 
         ctx.task_paginate(pages=embeds)
 
-    @util.with_typing
     @commands.guild_only()
     @duck.command(
         brief="Get duck kill scores",

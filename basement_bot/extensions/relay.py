@@ -142,7 +142,6 @@ class ReactionAddEvent(RelayEvent):
 
 
 class IRCEmbed(discord.Embed):
-
     ICON_URL = "https://cdn.icon-icons.com/icons2/1508/PNG/512/ircchat_104581.png"
 
     def __init__(self, *args, **kwargs):
@@ -183,7 +182,6 @@ class IRCEmbed(discord.Embed):
 
 
 class IRCMessageEmbed(IRCEmbed):
-
     ICON_URL = "https://cdn.icon-icons.com/icons2/1508/PNG/512/ircchat_104581.png"
 
     def __init__(self, *args, **kwargs):
@@ -319,7 +317,6 @@ class DiscordRelay(base.MatchCog):
 
 
 class IRCReceiver(base.LoopCog):
-
     IRC_LOGO = "📨"
     # start the receiver right away
     ON_START = True

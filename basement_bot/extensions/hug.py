@@ -11,7 +11,6 @@ async def setup(bot):
 
 
 class Hugger(base.BaseCog):
-
     HUGS_SELECTION = [
         "{user_giving_hug} hugs {user_to_hug} forever and ever and ever",
         "{user_giving_hug} wraps arms around {user_to_hug} and clings forever",
@@ -27,7 +26,6 @@ class Hugger(base.BaseCog):
         "https://cdn.icon-icons.com/icons2/1648/PNG/512/10022huggingface_110042.png"
     )
 
-    @util.with_typing
     @commands.guild_only()
     @commands.command(
         name="hug",

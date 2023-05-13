@@ -8,7 +8,6 @@ async def setup(bot):
 
 
 class Giphy(base.BaseCog):
-
     GIPHY_URL = "http://api.giphy.com/v1/gifs/search?q={}&api_key={}&limit={}"
     SEARCH_LIMIT = 10
 
@@ -17,7 +16,6 @@ class Giphy(base.BaseCog):
         index = url.find("?cid=")
         return url[:index]
 
-    @util.with_typing
     @commands.guild_only()
     @commands.command(
         name="giphy",

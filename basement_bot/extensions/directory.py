@@ -41,7 +41,6 @@ async def setup(bot):
 
 
 class ChannelDirectory(base.BaseCog):
-
     # I refuse to install num2word
     OPTION_EMOJIS = [
         "one",
@@ -234,7 +233,6 @@ class ChannelDirectory(base.BaseCog):
     async def directory(self, ctx):
         pass
 
-    @util.with_typing
     @commands.has_permissions(administrator=True)
     @commands.guild_only()
     @directory.command(

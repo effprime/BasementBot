@@ -124,7 +124,6 @@ class LoopEmbed(discord.Embed):
 
 
 class FactoidManager(base.MatchCog):
-
     LOOP_UPDATE_MINUTES = 10
 
     async def preconfig(self):
@@ -400,7 +399,6 @@ class FactoidManager(base.MatchCog):
     async def factoid(self, ctx):
         pass
 
-    @util.with_typing
     @commands.check(has_manage_factoids_role)
     @commands.check(no_mentions)
     @commands.guild_only()
@@ -419,7 +417,6 @@ class FactoidManager(base.MatchCog):
             embed_config=embed_config,
         )
 
-    @util.with_typing
     @commands.check(has_manage_factoids_role)
     @commands.guild_only()
     @factoid.command(
@@ -431,7 +428,6 @@ class FactoidManager(base.MatchCog):
         await self.delete_factoid(ctx, factoid_name)
         await ctx.send_confirm_embed(f"Successfully deleted factoid: *{factoid_name}*")
 
-    @util.with_typing
     @commands.check(has_manage_factoids_role)
     @commands.guild_only()
     @factoid.command(
@@ -459,7 +455,6 @@ class FactoidManager(base.MatchCog):
 
         await ctx.send(file=json_file)
 
-    @util.with_typing
     @commands.check(has_manage_factoids_role)
     @commands.guild_only()
     @factoid.command(
@@ -501,7 +496,6 @@ class FactoidManager(base.MatchCog):
 
         await ctx.send_confirm_embed("Factoid loop created")
 
-    @util.with_typing
     @commands.check(has_manage_factoids_role)
     @commands.guild_only()
     @factoid.command(
@@ -527,7 +521,6 @@ class FactoidManager(base.MatchCog):
             "Loop job deleted (please wait some time to see changes)"
         )
 
-    @util.with_typing
     @commands.check(has_manage_factoids_role)
     @commands.guild_only()
     @factoid.command(
@@ -561,7 +554,6 @@ class FactoidManager(base.MatchCog):
 
         await ctx.send(embed=embed)
 
-    @util.with_typing
     @commands.guild_only()
     @factoid.command(
         brief="Lists loop jobs",
@@ -591,7 +583,6 @@ class FactoidManager(base.MatchCog):
 
         await ctx.send(embed=embed)
 
-    @util.with_typing
     @commands.guild_only()
     @factoid.command(
         name="all",
@@ -669,7 +660,6 @@ class FactoidManager(base.MatchCog):
 
         await ctx.send(file=yaml_file)
 
-    @util.with_typing
     @commands.has_permissions(kick_members=True)
     @commands.guild_only()
     @factoid.command(
@@ -695,7 +685,6 @@ class FactoidManager(base.MatchCog):
 
         await ctx.send_confirm_embed("That factoid is now hidden")
 
-    @util.with_typing
     @commands.has_permissions(kick_members=True)
     @commands.guild_only()
     @factoid.command(

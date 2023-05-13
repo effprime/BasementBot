@@ -8,12 +8,10 @@ async def setup(bot):
 
 
 class Translator(base.BaseCog):
-
     HAS_CONFIG = False
 
     API_URL = "https://api.mymemory.translated.net/get?q={}&langpair={}|{}"
 
-    @util.with_typing
     @commands.cooldown(1, 60, commands.BucketType.channel)
     @commands.command(
         brief="Translates a message",

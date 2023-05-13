@@ -1,13 +1,14 @@
 """The main bot functions.
 """
+import asyncio
 import os
 
 import base
+import botlogging
 import cogs as builtin_cogs
 import context
 from discord.ext import ipc
-import asyncio
-import botlogging
+
 
 # pylint: disable=too-many-public-methods, too-many-instance-attributes
 class BasementBot(base.AdvancedBot):

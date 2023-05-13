@@ -94,7 +94,6 @@ class NoPendingApplications(Exception):
 
 
 class ApplicationManager(base.MatchCog, base.LoopCog):
-
     COLLECTION_NAME = "applications_extension"
     STALE_APPLICATION_DAYS = 30
     MAX_REMINDER_FIELDS = 10

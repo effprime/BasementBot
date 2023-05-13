@@ -33,7 +33,6 @@ async def setup(bot):
 
 
 class Who(base.BaseCog):
-
     # whois command
     @commands.command(
         name="whois",

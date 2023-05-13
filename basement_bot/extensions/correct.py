@@ -18,10 +18,8 @@ class CorrectEmbed(discord.Embed):
 
 
 class Corrector(base.BaseCog):
-
     SEARCH_LIMIT = 50
 
-    @util.with_typing
     @commands.guild_only()
     @commands.command(
         aliases=["c"],

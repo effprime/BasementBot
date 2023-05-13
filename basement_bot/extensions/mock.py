@@ -35,10 +35,8 @@ class MockEmbed(discord.Embed):
 
 
 class Mocker(base.BaseCog):
-
     SEARCH_LIMIT = 20
 
-    @util.with_typing
     @commands.guild_only()
     @commands.command(
         aliases=["sb"],
