@@ -78,6 +78,10 @@ class ExtensionsBot(commands.Bot):
         """Runs the bot, but uses the file config auth token instead of args."""
         super().run(self.file_config.main.auth_token, *args, **kwargs)
 
+    async def start(self, *args, **kwargs):
+        """Starts the bot, but uses the file config auth token instead of args."""
+        await super().start(self.file_config.main.auth_token, *args, **kwargs)
+
     def load_file_config(self, validate=True):
         """Loads the config yaml file into a bot object.
 

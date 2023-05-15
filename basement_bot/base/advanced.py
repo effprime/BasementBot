@@ -32,9 +32,9 @@ class AdvancedBot(DataBot):
             max_age_seconds=self.file_config.main.cache.guild_config_cache_seconds,
         )
 
-    async def start(self, *args, **kwargs):
+    async def setup_hook(self):
         self.guild_config_lock = asyncio.Lock()
-        await super().start(*args, **kwargs)
+        await super().setup_hook()
 
     async def get_prefix(self, message):
         """Gets the appropriate prefix for a command.

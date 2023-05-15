@@ -24,9 +24,7 @@ class BasementBot(base.AdvancedBot):
 
         super().__init__(*args, **kwargs)
 
-    async def start(self, *args, **kwargs):
-        """Starts IPC and the event loop and blocks until interrupted."""
-
+    async def setup_hook(self):
         if isinstance(self.logger, botlogging.DelayedLogger):
             self.logger.register_queue()
             asyncio.create_task(self.logger.run())
@@ -82,8 +80,7 @@ class BasementBot(base.AdvancedBot):
         if self.ipc:
             await self.load_builtin_cog(builtin_cogs.IPCEndpoints)
 
-        await self.logger.debug("Logging into Discord...")
-        await super().start(self.file_config.main.auth_token, *args, **kwargs)
+        await super().setup_hook()
 
     async def load_builtin_cog(self, cog):
         """Loads a cog as a builtin.
