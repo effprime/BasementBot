@@ -1,6 +1,5 @@
 """Module for defining the extensions bot methods."""
 
-import asyncio
 import glob
 import os
 

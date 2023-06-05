@@ -25,6 +25,10 @@ class BasementBot(base.AdvancedBot):
         super().__init__(*args, **kwargs)
 
     async def setup_hook(self):
+        """Sets up async tasks, IPC, and data connections.
+
+        Additionally, loads all builtin cogs.
+        """
         if isinstance(self.logger, botlogging.DelayedLogger):
             self.logger.register_queue()
             asyncio.create_task(self.logger.run())
