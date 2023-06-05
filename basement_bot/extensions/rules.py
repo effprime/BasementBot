@@ -8,8 +8,8 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(Rules(bot=bot))
+async def setup(bot):
+    await bot.add_cog(Rules(bot=bot))
 
 
 class RuleEmbed(discord.Embed):
@@ -19,7 +19,6 @@ class RuleEmbed(discord.Embed):
 
 
 class Rules(base.BaseCog):
-
     RULE_ICON_URL = "https://cdn.icon-icons.com/icons2/907/PNG/512/balance-scale-of-justice_icon-icons.com_70554.png"
     COLLECTION_NAME = "rules_extension"
 

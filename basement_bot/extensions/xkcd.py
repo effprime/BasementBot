@@ -2,16 +2,14 @@ import random
 
 import base
 import discord
-import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(XKCD(bot=bot))
+async def setup(bot):
+    await bot.add_cog(XKCD(bot=bot))
 
 
 class XKCD(base.BaseCog):
-
     MOST_RECENT_API_URL = "https://xkcd.com/info.0.json"
     SPECIFIC_API_URL = "https://xkcd.com/%s/info.0.json"
 

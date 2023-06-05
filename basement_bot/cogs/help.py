@@ -122,9 +122,11 @@ class Helper(base.BaseCog):
             ctx (discord.ext.Context): the context object for the message
             extension_names (List[str]): the extension names to use
         """
-        extension_name_text = ""
-        for extension_name in extension_names:
-            extension_name_text += f"- `{extension_name}`\n"
+        extension_name_text = (
+            "- "
+            + "\n- ".join(f"`{extension_name}`" for extension_name in extension_names)
+            + "\n"
+        )
 
         # pylint: disable=no-member
         command_prefix = await self.bot.get_prefix(ctx.message)

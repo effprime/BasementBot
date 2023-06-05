@@ -7,7 +7,7 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     config = bot.ExtensionConfig()
     config.add(
         key="channel",
@@ -31,12 +31,11 @@ def setup(bot):
         default=48,
     )
 
-    bot.add_cog(KanyeQuotes(bot=bot, extension_name="kanye"))
+    await bot.add_cog(KanyeQuotes(bot=bot, extension_name="kanye"))
     bot.add_extension_config("kanye", config)
 
 
 class KanyeEmbed(discord.Embed):
-
     KANYE_PICS = [
         "https://i.imgur.com/ITmTXGz.jpg",
         "https://i.imgur.com/o8BkPrL.jpg",
@@ -55,7 +54,6 @@ class KanyeEmbed(discord.Embed):
 
 
 class KanyeQuotes(base.LoopCog):
-
     API_URL = "https://api.kanye.rest"
 
     async def get_quote(self):
@@ -80,7 +78,6 @@ class KanyeQuotes(base.LoopCog):
             )
         )
 
-    @util.with_typing
     @commands.cooldown(1, 60, commands.BucketType.channel)
     @commands.command(
         brief="Gets a Kanye West quote",

@@ -2,3 +2,5 @@
 config.yml
 *.pyc
 .vscode
+data/
+postgres/

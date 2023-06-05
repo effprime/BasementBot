@@ -1,5 +1,6 @@
 """Basement Bot main thread.
 """
+import asyncio
 import logging
 import os
 
@@ -33,4 +34,4 @@ bot_ = bot.BasementBot(
     intents=intents,
     allowed_mentions=discord.AllowedMentions(everyone=False, roles=False),
 )
-bot_.run()
+asyncio.run(bot_.start())

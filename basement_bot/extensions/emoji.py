@@ -6,12 +6,11 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(Emojis(bot=bot))
+async def setup(bot):
+    await bot.add_cog(Emojis(bot=bot))
 
 
 class Emojis(base.BaseCog):
-
     SEARCH_LIMIT = 20
     KEY_MAP = {"?": "question", "!": "exclamation"}
 
@@ -68,7 +67,6 @@ class Emojis(base.BaseCog):
     async def emoji(self, ctx):
         pass
 
-    @util.with_typing
     @emoji.command(
         aliases=["msg"],
         brief="Generates an emoji message",

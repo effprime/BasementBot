@@ -12,7 +12,7 @@ import yaml
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     config = bot.ExtensionConfig()
     config.add(
         key="webhook_id",
@@ -56,7 +56,7 @@ def setup(bot):
         description="The list of role names to give someone once they are approved",
         default=[],
     )
-    bot.add_cog(ApplicationManager(bot=bot, extension_name="application"))
+    await bot.add_cog(ApplicationManager(bot=bot, extension_name="application"))
     bot.add_extension_config("application", config)
 
 
@@ -94,7 +94,6 @@ class NoPendingApplications(Exception):
 
 
 class ApplicationManager(base.MatchCog, base.LoopCog):
-
     COLLECTION_NAME = "applications_extension"
     STALE_APPLICATION_DAYS = 30
     MAX_REMINDER_FIELDS = 10

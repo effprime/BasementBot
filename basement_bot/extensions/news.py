@@ -6,7 +6,7 @@ import base
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     config = bot.ExtensionConfig()
     config.add(
         key="channel",
@@ -37,7 +37,7 @@ def setup(bot):
         default=None,
     )
 
-    bot.add_cog(News(bot=bot, extension_name="news"))
+    await bot.add_cog(News(bot=bot, extension_name="news"))
     bot.add_extension_config("news", config)
 
 
@@ -52,7 +52,6 @@ class Category(enum.Enum):
 
 
 class News(base.LoopCog):
-
     API_URL = "http://newsapi.org/v2/top-headlines?apiKey={}&country={}"
 
     async def get_headlines(self, country_code, category=None):

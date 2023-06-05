@@ -7,7 +7,7 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     config = bot.ExtensionConfig()
     config.add(
         key="hangman_roles",
@@ -17,12 +17,11 @@ def setup(bot):
         default=[],
     )
 
-    bot.add_cog(HangmanCog(bot=bot))
+    await bot.add_cog(HangmanCog(bot=bot))
     bot.add_extension_config("hangman", config)
 
 
 class HangmanGame:
-
     HANG_PICS = [
         """
         +---+

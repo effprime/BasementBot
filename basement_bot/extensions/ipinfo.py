@@ -4,12 +4,11 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(IPInfo(bot=bot))
+async def setup(bot):
+    await bot.add_cog(IPInfo(bot=bot))
 
 
 class IPInfo(base.BaseCog):
-
     API_URL = "https://ipinfo.io"
     IP_ICON_URL = "https://cdn.icon-icons.com/icons2/1858/PNG/512/iconfinder-dedicatedipaddress-4263513_117864.png"
 

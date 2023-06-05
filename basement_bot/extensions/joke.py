@@ -4,7 +4,7 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     config = bot.ExtensionConfig()
     config.add(
         key="pc_jokes",
@@ -13,12 +13,11 @@ def setup(bot):
         description="True if only politically correct jokes should be shown (non-racist/non-sexist)",
         default=True,
     )
-    bot.add_cog(Joker(bot=bot))
+    await bot.add_cog(Joker(bot=bot))
     bot.add_extension_config("joke", config)
 
 
 class Joker(base.BaseCog):
-
     API_URL = "https://v2.jokeapi.dev/joke/Any"
 
     async def call_api(self, ctx, config):
@@ -44,7 +43,6 @@ class Joker(base.BaseCog):
         embed.color = discord.Color.random()
         return embed
 
-    @util.with_typing
     @commands.cooldown(1, 60, commands.BucketType.channel)
     @commands.command(
         name="joke",

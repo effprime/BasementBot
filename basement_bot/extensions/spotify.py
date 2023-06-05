@@ -4,12 +4,11 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(Spotify(bot=bot))
+async def setup(bot):
+    await bot.add_cog(Spotify(bot=bot))
 
 
 class Spotify(base.BaseCog):
-
     AUTH_URL = "https://accounts.spotify.com/api/token"
     API_URL = "https://api.spotify.com/v1/search"
 
@@ -27,7 +26,6 @@ class Spotify(base.BaseCog):
 
         return response.get("access_token")
 
-    @util.with_typing
     @commands.cooldown(3, 60, commands.BucketType.channel)
     @commands.command(
         brief="Searches Spotify",

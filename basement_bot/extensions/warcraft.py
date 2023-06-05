@@ -8,7 +8,7 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     config = bot.ExtensionConfig()
     config.add(
         key="region",
@@ -38,13 +38,12 @@ def setup(bot):
         description="The ID of the channel to which realm alerts are sent",
         default=None,
     )
+    await bot.add_cog(WarcraftCommands(bot=bot))
+    await bot.add_cog(RealmAlerts(bot=bot, extension_name="warcraft", no_guild=True))
     bot.add_extension_config("warcraft", config)
-    bot.add_cog(WarcraftCommands(bot=bot))
-    bot.add_cog(RealmAlerts(bot=bot, extension_name="warcraft", no_guild=True))
 
 
 class WarcraftEmbed(discord.Embed):
-
     ICON_URL = "https://cdn.icon-icons.com/icons2/1381/PNG/512/sakuradungeon_93641.png"
 
     def __init__(self, *args, **kwargs):
@@ -59,7 +58,6 @@ class Region(enum.Enum):
 
 
 class BattleNet(base.LoopCog):
-
     RETAIL_NAMESPACE = "dynamic-us"
     CLASSIC_NAMESPACE = "dynamic-classic-us"
     OAUTH_URL = "oauth.battle.net/token"
@@ -109,7 +107,6 @@ class WarcraftCommands(BattleNet):
     async def wowc(self, ctx):
         pass
 
-    @util.with_typing
     @wowc.command(
         name="realm",
         brief="Gets WoW classic realm info",
@@ -127,7 +124,6 @@ class WarcraftCommands(BattleNet):
     async def wow(self, ctx):
         pass
 
-    @util.with_typing
     @wow.command(
         name="realm",
         brief="Gets WoW realm info",
@@ -175,7 +171,6 @@ class WarcraftCommands(BattleNet):
 
 
 class RealmAlerts(BattleNet, base.LoopCog):
-
     POLL_TIME_SECONDS = 300
     ON_START = True
 

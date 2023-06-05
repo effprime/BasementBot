@@ -5,12 +5,11 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(Lenny(bot=bot))
+async def setup(bot):
+    await bot.add_cog(Lenny(bot=bot))
 
 
 class Lenny(base.BaseCog):
-
     LENNYS_SELECTION = [
         "( ͡° ͜ʖ ͡°)",
         "( ͠° ͟ʖ ͡°)",
@@ -35,7 +34,6 @@ class Lenny(base.BaseCog):
         "✺◟( ͡° ͜ʖ ͡°)◞✺",
     ]
 
-    @util.with_typing
     @commands.command(
         name="len",
         brief="Returns a Lenny face",

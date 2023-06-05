@@ -3,12 +3,11 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(Giphy(bot=bot))
+async def setup(bot):
+    await bot.add_cog(Giphy(bot=bot))
 
 
 class Giphy(base.BaseCog):
-
     GIPHY_URL = "http://api.giphy.com/v1/gifs/search?q={}&api_key={}&limit={}"
     SEARCH_LIMIT = 10
 
@@ -17,7 +16,6 @@ class Giphy(base.BaseCog):
         index = url.find("?cid=")
         return url[:index]
 
-    @util.with_typing
     @commands.guild_only()
     @commands.command(
         name="giphy",

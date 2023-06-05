@@ -65,6 +65,7 @@ class ExtensionsBot(commands.Bot):
                 send=not self.file_config.main.logging.block_discord_send,
                 wait_time=self.file_config.main.logging.queue_wait_seconds,
             )
+
         else:
             self.logger = botlogging.BotLogger(
                 bot=self,
@@ -75,6 +76,10 @@ class ExtensionsBot(commands.Bot):
     def run(self, *args, **kwargs):
         """Runs the bot, but uses the file config auth token instead of args."""
         super().run(self.file_config.main.auth_token, *args, **kwargs)
+
+    async def start(self, *args, **kwargs):
+        """Starts the bot, but uses the file config auth token instead of args."""
+        await super().start(self.file_config.main.auth_token, *args, **kwargs)
 
     def load_file_config(self, validate=True):
         """Loads the config yaml file into a bot object.
@@ -117,7 +122,7 @@ class ExtensionsBot(commands.Bot):
                     f"Config key {error_key} from {section}.{subsection} not supplied"
                 )
 
-    def get_potential_extensions(self):
+    async def get_potential_extensions(self):
         """Gets the current list of extensions in the defined directory."""
         self.logger.console.info(f"Searching {self.EXTENSIONS_DIR} for extensions")
         return [
@@ -126,14 +131,14 @@ class ExtensionsBot(commands.Bot):
             if os.path.isfile(f) and not f.endswith("__init__.py")
         ]
 
-    def load_extensions(self, graceful=True):
+    async def load_extensions(self, graceful=True):
         """Loads all extensions currently in the extensions directory.
 
         parameters:
             graceful (bool): True if extensions should gracefully fail to load
         """
         self.logger.console.debug("Retrieving extensions")
-        for extension_name in self.get_potential_extensions():
+        for extension_name in await self.get_potential_extensions():
             if extension_name in self.file_config.main.disabled_extensions:
                 self.logger.console.debug(
                     f"{extension_name} is disabled on startup - ignoring load"
@@ -141,7 +146,9 @@ class ExtensionsBot(commands.Bot):
                 continue
 
             try:
-                self.load_extension(f"{self.EXTENSIONS_DIR_NAME}.{extension_name}")
+                await self.load_extension(
+                    f"{self.EXTENSIONS_DIR_NAME}.{extension_name}"
+                )
             except Exception as exception:
                 self.logger.console.error(
                     f"Failed to load extension {extension_name}: {exception}"
@@ -171,7 +178,7 @@ class ExtensionsBot(commands.Bot):
         extension_name = command.module.split(".")[1]
         return extension_name
 
-    def register_file_extension(self, extension_name, fp):
+    async def register_file_extension(self, extension_name, fp):
         """Offers an interface for loading an extension from an external source.
 
         This saves the external file data to the OS, without any validation.
@@ -184,7 +191,7 @@ class ExtensionsBot(commands.Bot):
             raise NameError("Invalid extension name")
 
         try:
-            self.unload_extension(f"{self.EXTENSIONS_DIR_NAME}.{extension_name}")
+            await self.unload_extension(f"{self.EXTENSIONS_DIR_NAME}.{extension_name}")
         except commands.errors.ExtensionNotLoaded:
             pass
 

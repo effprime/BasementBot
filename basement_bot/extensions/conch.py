@@ -5,12 +5,11 @@ import discord
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(MagicConch(bot=bot))
+async def setup(bot):
+    await bot.add_cog(MagicConch(bot=bot))
 
 
 class ConchEmbed(discord.Embed):
-
     PIC_URL = "https://i.imgur.com/vdvGrsR.png"
 
     def __init__(self, *args, **kwargs):
@@ -20,7 +19,6 @@ class ConchEmbed(discord.Embed):
 
 
 class MagicConch(base.BaseCog):
-
     RESPONSES = [
         "As I see it, yes.",
         "Ask again later.",

@@ -10,7 +10,7 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     class Warning(bot.db.Model):
         __tablename__ = "warnings"
         pk = bot.db.Column(bot.db.Integer, primary_key=True)
@@ -105,7 +105,7 @@ def setup(bot):
         default=50,
     )
 
-    bot.add_cog(Protector(bot=bot, models=[Warning], extension_name="protect"))
+    await bot.add_cog(Protector(bot=bot, models=[Warning], extension_name="protect"))
     bot.add_extension_config("protect", config)
 
 
@@ -117,7 +117,6 @@ class ProtectEmbed(discord.Embed):
 
 
 class Protector(base.MatchCog):
-
     ALERT_ICON_URL = "https://cdn.icon-icons.com/icons2/2063/PNG/512/alert_danger_warning_notification_icon_124692.png"
     CLIPBOARD_ICON_URL = (
         "https://icon-icons.com/icons2/203/PNG/128/diagram-30_24487.png"

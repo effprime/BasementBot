@@ -11,7 +11,7 @@ from discord import Color as embed_colors
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     class DuckUser(bot.db.Model):
         __tablename__ = "duckusers"
 
@@ -66,12 +66,11 @@ def setup(bot):
         default=50,
     )
 
-    bot.add_cog(DuckHunt(bot=bot, models=[DuckUser], extension_name="duck"))
+    await bot.add_cog(DuckHunt(bot=bot, models=[DuckUser], extension_name="duck"))
     bot.add_extension_config("duck", config)
 
 
 class DuckHunt(base.LoopCog):
-
     DUCK_PIC_URL = "https://cdn.icon-icons.com/icons2/1446/PNG/512/22276duck_98782.png"
     BEFRIEND_URL = "https://cdn.icon-icons.com/icons2/603/PNG/512/heart_love_valentines_relationship_dating_date_icon-icons.com_55985.png"
     KILL_URL = "https://cdn.icon-icons.com/icons2/1919/PNG/512/huntingtarget_122049.png"
@@ -198,7 +197,7 @@ class DuckHunt(base.LoopCog):
             - cooldowns.get(message.author.id, datetime.datetime.now())
         ).seconds < config.extensions.duck.cooldown.value:
             cooldowns[message.author.id] = datetime.datetime.now()
-            self.bot.loop.create_task(
+            asyncio.create_task(
                 message.author.send(
                     f"I said to wait {config.extensions.duck.cooldown.value} seconds! Resetting timer..."
                 )
@@ -212,7 +211,7 @@ class DuckHunt(base.LoopCog):
         choice_ = random.choice(random.choices([True, False], weights=weights, k=1000))
         if not choice_:
             cooldowns[message.author.id] = datetime.datetime.now()
-            self.bot.loop.create_task(
+            asyncio.create_task(
                 message.channel.send(
                     content=message.author.mention,
                     embed=embeds.DenyEmbed(
@@ -241,7 +240,6 @@ class DuckHunt(base.LoopCog):
     async def duck(self, ctx):
         pass
 
-    @util.with_typing
     @commands.guild_only()
     @duck.command(
         brief="Get duck stats",
@@ -271,7 +269,6 @@ class DuckHunt(base.LoopCog):
 
         await ctx.send(embed=embed)
 
-    @util.with_typing
     @commands.guild_only()
     @duck.command(
         brief="Get duck friendship scores",
@@ -314,7 +311,6 @@ class DuckHunt(base.LoopCog):
 
         ctx.task_paginate(pages=embeds)
 
-    @util.with_typing
     @commands.guild_only()
     @duck.command(
         brief="Get duck kill scores",

@@ -5,12 +5,11 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(ChatGPT(bot=bot))
+async def setup(bot):
+    await bot.add_cog(ChatGPT(bot=bot))
 
 
 class ChatGPT(base.BaseCog):
-
     API_URL = "https://api.openai.com/v1/chat/completions"
 
     async def preconfig(self):
@@ -20,10 +19,12 @@ class ChatGPT(base.BaseCog):
         )
 
     def get_system_prompt(self):
-        return [{
-            "role": "system",
-            "content": "The following questions are being asked via a Discord bot. Please try to keep messages informative but concise. For example, in code responses please try to not have a lot of newlines if unnecessary. The max message size should always be under 2000 characters or it will get clipped.",
-        }]
+        return [
+            {
+                "role": "system",
+                "content": "The following questions are being asked via a Discord bot. Please try to keep messages informative but concise. For example, in code responses please try to not have a lot of newlines if unnecessary. The max message size should always be under 2000 characters or it will get clipped.",
+            }
+        ]
 
     async def call_api(self, ctx, api_key, prompt):
         headers = {
@@ -41,7 +42,6 @@ class ChatGPT(base.BaseCog):
         )
         return response
 
-    @util.with_typing
     @commands.cooldown(3, 60, commands.BucketType.channel)
     @commands.command(
         brief="Prompts ChatGPT",
@@ -84,7 +84,6 @@ class ChatGPT(base.BaseCog):
     async def gptutil(self, ctx):
         pass
 
-    @util.with_typing
     @gptutil.command(
         name="clear",
         brief="Clears history",
@@ -102,7 +101,6 @@ class ChatGPT(base.BaseCog):
 
         await ctx.send_confirm_embed("Chat history cleared!")
 
-    @util.with_typing
     @gptutil.command(
         name="history",
         brief="Gets history",

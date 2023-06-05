@@ -5,8 +5,8 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(Weather(bot=bot))
+async def setup(bot):
+    await bot.add_cog(Weather(bot=bot))
 
 
 class Weather(base.BaseCog):
@@ -16,7 +16,6 @@ class Weather(base.BaseCog):
         url = "http://api.openweathermap.org/data/2.5/weather"
         return f"{url}?q={searches}&units=imperial&appid={self.bot.file_config.main.api_keys.open_weather}"
 
-    @util.with_typing
     @commands.cooldown(3, 60, commands.BucketType.channel)
     @commands.command(
         name="we",

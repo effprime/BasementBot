@@ -6,8 +6,8 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(Burn(bot=bot))
+async def setup(bot):
+    await bot.add_cog(Burn(bot=bot))
 
 
 class BurnEmbed(discord.Embed):
@@ -18,7 +18,6 @@ class BurnEmbed(discord.Embed):
 
 
 class Burn(base.BaseCog):
-
     SEARCH_LIMIT = 50
     PHRASES = [
         "Sick BURN!",
@@ -29,7 +28,6 @@ class Burn(base.BaseCog):
         "Was that message a hot pan? BECAUSE IT BURNS!",
     ]
 
-    @util.with_typing
     @commands.guild_only()
     @commands.command(
         brief="Declares a BURN!",

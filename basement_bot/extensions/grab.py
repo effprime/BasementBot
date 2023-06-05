@@ -7,7 +7,7 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     class Grab(bot.db.Model):
         __tablename__ = "grabs"
 
@@ -35,7 +35,7 @@ def setup(bot):
         default=[],
     )
 
-    bot.add_cog(Grabber(bot=bot, models=[Grab]))
+    await bot.add_cog(Grabber(bot=bot, models=[Grab]))
     bot.add_extension_config("grab", config)
 
 
@@ -50,11 +50,9 @@ async def invalid_channel(ctx):
 
 
 class Grabber(base.BaseCog):
-
     HAS_CONFIG = False
     SEARCH_LIMIT = 20
 
-    @util.with_typing
     @commands.guild_only()
     @commands.check(invalid_channel)
     @commands.command(
@@ -98,7 +96,6 @@ class Grabber(base.BaseCog):
     async def grabs(self, ctx):
         pass
 
-    @util.with_typing
     @commands.guild_only()
     @commands.check(invalid_channel)
     @grabs.command(
@@ -163,7 +160,6 @@ class Grabber(base.BaseCog):
 
         ctx.task_paginate(pages=embeds)
 
-    @util.with_typing
     @commands.guild_only()
     @commands.check(invalid_channel)
     @grabs.command(

@@ -9,4 +9,44 @@ services:
             - DEBUG=1
         volumes:
             - ./:/var/BasementBot
-            # - ../BotLog/src/botlog:/usr/local/lib/python3.9/site-packages/botlog
+            # - ../BotLogging/src/botlogging:/usr/local/lib/python3.9/site-packages/botlogging
+
+    mongodb:
+        image: mongo:latest
+        container_name: ${MONGO_CONTAINER_NAME:-mongodb}
+        volumes:
+        - ./data:/data/db
+        ports:
+        - ${DB_HOST_PORT:-27017}:27017
+        environment:
+        - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+        - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
+        restart: always
+    mongoexpress:
+        image: mongo-express:latest
+        container_name: ${EXPRESS_CONTAINER_NAME:-mongo-express}
+        ports:
+        - ${EXPRESS_HOST_PORT:-8081}:8081
+        environment:
+        - ME_CONFIG_BASICAUTH_PASSWORD=${WEB_PASSWORD}
+        - ME_CONFIG_BASICAUTH_USERNAME=${WEB_USER}
+        - ME_CONFIG_MONGODB_ADMINPASSWORD=${DB_PASSWORD}
+        - ME_CONFIG_MONGODB_ADMINUSERNAME=${DB_USER}
+        - ME_CONFIG_MONGODB_PORT=27017
+        - ME_CONFIG_MONGODB_SERVER=mongodb
+        - ME_CONFIG_OPTIONS_EDITORTHEME=${EDITOR_THEME}
+        depends_on:
+        - mongodb
+        restart: always
+
+    postgres:
+        image: postgres:12.0-alpine
+        container_name: ${POSTGRES_CONTAINER_NAME:-postgres}
+        restart: unless-stopped
+        ports:
+            - "${POSTGRES_HOST_PORT:-5432}:5432"
+        volumes:
+            - ./postgres:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_USER=${DB_USER}
+            - POSTGRES_PASS=${DB_PASSWORD}

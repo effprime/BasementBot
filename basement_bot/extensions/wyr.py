@@ -7,8 +7,8 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(WouldYouRather(bot=bot))
+async def setup(bot):
+    await bot.add_cog(WouldYouRather(bot=bot))
 
 
 class Question:
@@ -28,7 +28,6 @@ class Question:
 
 
 class WouldYouRather(base.BaseCog):
-
     HAS_CONFIG = False
 
     async def preconfig(self):
@@ -519,7 +518,6 @@ class WouldYouRather(base.BaseCog):
         Question("watch a two-hour movie", "watch two hours of shows"),
     ]
 
-    @util.with_typing
     @commands.command(
         name="wyr",
         brief="Gets Would You Rather questions",

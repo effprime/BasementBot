@@ -3,17 +3,15 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(Translator(bot=bot))
+async def setup(bot):
+    await bot.add_cog(Translator(bot=bot))
 
 
 class Translator(base.BaseCog):
-
     HAS_CONFIG = False
 
     API_URL = "https://api.mymemory.translated.net/get?q={}&langpair={}|{}"
 
-    @util.with_typing
     @commands.cooldown(1, 60, commands.BucketType.channel)
     @commands.command(
         brief="Translates a message",

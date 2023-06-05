@@ -25,14 +25,18 @@ class AdvancedBot(DataBot):
         self.owner = None
         self.__startup_time = None
         self.guild_config_collection = None
-        self.guild_config_lock = asyncio.Lock()
+        self.guild_config_lock = None
         super().__init__(*args, prefix=self.get_prefix, **kwargs)
         self.guild_config_cache = expiringdict.ExpiringDict(
             max_len=self.file_config.main.cache.guild_config_cache_length,
             max_age_seconds=self.file_config.main.cache.guild_config_cache_seconds,
         )
 
-    async def get_prefix(self, message):
+    async def setup_hook(self):
+        self.guild_config_lock = asyncio.Lock()
+        await super().setup_hook()
+
+    async def get_prefix(self, message, /):
         """Gets the appropriate prefix for a command.
 
         parameters:
@@ -181,7 +185,7 @@ class AdvancedBot(DataBot):
 
         return config_object
 
-    async def can_run(self, ctx, *, call_once=False):
+    async def can_run(self, ctx, /, *, call_once=False):
         """Wraps the default can_run check to evaluate bot-admin permission.
 
         parameters:
@@ -301,7 +305,7 @@ class AdvancedBot(DataBot):
         await self.logger.info("Bot online")
         await self.get_owner()
 
-    async def on_message(self, message):
+    async def on_message(self, message, /):
         """Catches messages and acts appropriately.
 
         parameters:
@@ -358,7 +362,7 @@ class AdvancedBot(DataBot):
             exception=exception,
         )
 
-    async def on_command_error(self, context, exception):
+    async def on_command_error(self, context, exception, /):
         """Catches command errors and sends them to the error logger for processing.
 
         parameters:

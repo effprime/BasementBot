@@ -4,12 +4,11 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(Wolfram(bot=bot))
+async def setup(bot):
+    await bot.add_cog(Wolfram(bot=bot))
 
 
 class WolframEmbed(discord.Embed):
-
     ICON_URL = "https://cdn.icon-icons.com/icons2/2107/PNG/512/file_type_wolfram_icon_130071.png"
 
     def __init__(self, *args, **kwargs):
@@ -19,10 +18,8 @@ class WolframEmbed(discord.Embed):
 
 
 class Wolfram(base.BaseCog):
-
     API_URL = "http://api.wolframalpha.com/v1/result?appid={}&i={}"
 
-    @util.with_typing
     @commands.cooldown(3, 60, commands.BucketType.channel)
     @commands.command(
         name="wa",

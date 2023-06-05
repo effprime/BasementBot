@@ -9,9 +9,9 @@ import munch
 from discord.ext import commands
 
 
-def setup(bot):
-    bot.add_cog(DiscordRelay(bot=bot, no_guild=True, extension_name="relay"))
-    bot.add_cog(IRCReceiver(bot=bot, no_guild=True, extension_name="relay"))
+async def setup(bot):
+    await bot.add_cog(DiscordRelay(bot=bot, no_guild=True, extension_name="relay"))
+    await bot.add_cog(IRCReceiver(bot=bot, no_guild=True, extension_name="relay"))
 
 
 class RelayEvent:
@@ -142,7 +142,6 @@ class ReactionAddEvent(RelayEvent):
 
 
 class IRCEmbed(discord.Embed):
-
     ICON_URL = "https://cdn.icon-icons.com/icons2/1508/PNG/512/ircchat_104581.png"
 
     def __init__(self, *args, **kwargs):
@@ -183,7 +182,6 @@ class IRCEmbed(discord.Embed):
 
 
 class IRCMessageEmbed(IRCEmbed):
-
     ICON_URL = "https://cdn.icon-icons.com/icons2/1508/PNG/512/ircchat_104581.png"
 
     def __init__(self, *args, **kwargs):
@@ -319,7 +317,6 @@ class DiscordRelay(base.MatchCog):
 
 
 class IRCReceiver(base.LoopCog):
-
     IRC_LOGO = "📨"
     # start the receiver right away
     ON_START = True

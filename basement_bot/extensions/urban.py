@@ -4,7 +4,7 @@ import util
 from discord.ext import commands
 
 
-def setup(bot):
+async def setup(bot):
     config = bot.ExtensionConfig()
     config.add(
         key="max_responses",
@@ -14,17 +14,15 @@ def setup(bot):
         default=1,
     )
 
-    bot.add_cog(UrbanDictionary(bot=bot))
+    await bot.add_cog(UrbanDictionary(bot=bot))
     bot.add_extension_config("urban", config)
 
 
 class UrbanDictionary(base.BaseCog):
-
     BASE_URL = "http://api.urbandictionary.com/v0/define?term="
     SEE_MORE_URL = "https://www.urbandictionary.com/define.php?term="
     ICON_URL = "https://cdn.icon-icons.com/icons2/114/PNG/512/dictionary_19159.png"
 
-    @util.with_typing
     @commands.cooldown(3, 60, commands.BucketType.channel)
     @commands.command(
         name="urb",
