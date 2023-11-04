@@ -46,7 +46,7 @@ class Who(base.BaseCog):
             description="**Note: this is a bot account!**" if user.bot else "",
         )
 
-        embed.set_thumbnail(url=user.avatar_url)
+        embed.set_thumbnail(url=user.avatar.url)
 
         embed.add_field(name="Created at", value=user.created_at.replace(microsecond=0))
         embed.add_field(name="Joined at", value=user.joined_at.replace(microsecond=0))

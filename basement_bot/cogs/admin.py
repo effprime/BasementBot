@@ -352,7 +352,7 @@ class AdminControl(base.BaseCog):
             inline=False,
         )
 
-        embed.set_thumbnail(url=self.bot.user.avatar_url)
+        embed.set_thumbnail(url=self.bot.user.avatar.url)
 
         await ctx.send(embed=embed)
 

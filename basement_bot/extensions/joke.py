@@ -39,7 +39,7 @@ class Joker(base.BaseCog):
 
     def generate_embed(self, joke_text):
         embed = discord.Embed(description=joke_text)
-        embed.set_author(name="Joke", icon_url=self.bot.user.avatar_url)
+        embed.set_author(name="Joke", icon_url=self.bot.user.avatar.url)
         embed.color = discord.Color.random()
         return embed
 
