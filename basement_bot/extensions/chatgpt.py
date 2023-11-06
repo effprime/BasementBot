@@ -15,7 +15,7 @@ class ChatGPT(base.BaseCog):
     async def preconfig(self):
         self.history = expiringdict.ExpiringDict(
             max_len=1000,
-            max_age_seconds=3600,
+            max_age_seconds=10800,
         )
 
     def get_system_prompt(self):
