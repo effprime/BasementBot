@@ -55,6 +55,11 @@ class ChatGPT(base.BaseCog):
             return
 
         response = await self.call_api(ctx, api_key, prompt)
+        status_code = response.get("status_code", 0)
+        if status_code / 100 != 2:
+            await ctx.send_deny_embed(f"I got a {status_code} code back from OpenAI!")
+            return
+
         choices = response.get("choices", [])
         if not choices:
             await ctx.send_deny_embed("I couldn't figure out what to say!")
