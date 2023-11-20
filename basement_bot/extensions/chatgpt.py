@@ -32,7 +32,7 @@ class ChatGPT(base.BaseCog):
             "Content-Type": "application/json",
         }
         data = {
-            "model": "gpt-3.5-turbo",
+            "model": "gpt-4",
             "messages": self.get_system_prompt()
             + self.history.get(ctx.author.id, [])
             + [{"role": "user", "content": prompt}],
