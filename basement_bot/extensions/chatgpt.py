@@ -6,7 +6,16 @@ from discord.ext import commands
 
 
 async def setup(bot):
+    config = bot.ExtensionConfig()
+    config.add(
+        key="model",
+        datatype="str",
+        title="ChatGPT model",
+        description="ChatGPT model name",
+        default="gpt-4",
+    )
     await bot.add_cog(ChatGPT(bot=bot))
+    bot.add_extension_config("chatgpt", config)
 
 
 class ChatGPT(base.BaseCog):
@@ -26,13 +35,13 @@ class ChatGPT(base.BaseCog):
             }
         ]
 
-    async def call_api(self, ctx, api_key, prompt):
+    async def call_api(self, ctx, model, api_key, prompt):
         headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
         }
         data = {
-            "model": "gpt-4",
+            "model": model,
             "messages": self.get_system_prompt()
             + self.history.get(ctx.author.id, [])
             + [{"role": "user", "content": prompt}],
@@ -54,7 +63,8 @@ class ChatGPT(base.BaseCog):
             await ctx.send_deny_embed("I couldn't find the OpenAI API key")
             return
 
-        response = await self.call_api(ctx, api_key, prompt)
+        config = await self.bot.get_context_config(ctx)
+        response = await self.call_api(ctx, config.extensions.chatgpt.model.value, api_key, prompt)
         status_code = response.get("status_code", 0)
         if status_code / 100 != 2:
             await ctx.send_deny_embed(f"I got a {status_code} code back from OpenAI!")
